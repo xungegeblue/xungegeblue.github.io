@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="join的锁join是一个线程的方法，一个线程调用join方法，那么它需要先执行完毕。一个需要重点记住的就是join会放弃锁，这个是重点！！ 123456789101112131415161718192021222324package com.example.demo;import java.util.ArrayList;public class Miv &amp;#123;    public stat">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中常见问题">
+<meta property="og:url" content="https://xungegeblue.github.io/2019/05/16/love-java/index.html">
+<meta property="og:site_name" content="MIV">
+<meta property="og:description" content="join的锁join是一个线程的方法，一个线程调用join方法，那么它需要先执行完毕。一个需要重点记住的就是join会放弃锁，这个是重点！！ 123456789101112131415161718192021222324package com.example.demo;import java.util.ArrayList;public class Miv &amp;#123;    public stat">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-16T09:04:51.845Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中常见问题">
+<meta name="twitter:description" content="join的锁join是一个线程的方法，一个线程调用join方法，那么它需要先执行完毕。一个需要重点记住的就是join会放弃锁，这个是重点！！ 123456789101112131415161718192021222324package com.example.demo;import java.util.ArrayList;public class Miv &amp;#123;    public stat">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xungegeblue.github.io/2019/05/16/love-java/">
+
+
+
+
+
+  <title>Java中常见问题 | MIV</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MIV</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">MIV的技术分享网站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xungegeblue.github.io/2019/05/16/love-java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MIV">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://i.loli.net/2019/05/16/5cdd24d4d78bf33751.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MIV">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java中常见问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-16T16:38:52+08:00">
+                2019-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="join的锁"><a href="#join的锁" class="headerlink" title="join的锁"></a>join的锁</h2><p>join是一个线程的方法，一个线程调用join方法，那么它需要先执行完毕。<br>一个需要重点记住的就是join会放弃锁，这个是重点！！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Miv</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        R r = <span class="keyword">new</span> R();</span><br><span class="line">        r.start();</span><br><span class="line">        r.join();<span class="comment">//主线程停止，等子线程运行结束再继续（R线程需要先执行完毕)</span></span><br><span class="line">        System.out.println(<span class="string">"over"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">R</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"weak up"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="不同包中的权限问题"><a href="#不同包中的权限问题" class="headerlink" title="不同包中的权限问题"></a>不同包中的权限问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> library;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Api</span></span>&#123;</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">PackagePrivate</span></span>&#123;&#125;</span><br><span class="line">    <span class="keyword">static</span> PackagePrivate member = <span class="keyword">new</span> PackagePrivate();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">package</span> client;</span><br><span class="line"><span class="keyword">import</span> library.Api;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(Api.member.hashCode());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中，PackagePrivate不是公共的，所以不可以再其他包里面直接使用他的成员方法。</p>
+<h2 id="多层次的反射"><a href="#多层次的反射" class="headerlink" title="多层次的反射"></a>多层次的反射</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Outer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Outer"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Outer().greetWorld();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">greetWorld</span><span class="params">()</span><span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//        Constructor c = Inner.class.getConstructor(Outer.class);</span></span><br><span class="line"><span class="comment">//        System.out.println(c.newInstance(Outer.this));</span></span><br><span class="line">        System.out.println( Inner.class.newInstance() ); <span class="comment">//错误</span></span><br><span class="line">        System.out.println( <span class="keyword">new</span> Inner() ); <span class="comment">//正确</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span></span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"Hello world"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程中断的问题"><a href="#线程中断的问题" class="headerlink" title="线程中断的问题"></a>线程中断的问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelfInterruption</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread.currentThread().interrupt(); <span class="comment">//中断线程</span></span><br><span class="line">        <span class="keyword">if</span> (Thread.interrupted()) &#123; <span class="comment">//如果线程中断，返回true，并且清除中断线程的状态</span></span><br><span class="line">            System.out.println(<span class="string">"Interrupted: "</span> +</span><br><span class="line">                    Thread.interrupted());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"Not interrupted: "</span> +</span><br><span class="line">                    Thread.interrupted());</span><br><span class="line">        &#125;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Thread.currentThread().interrupt();</span><br><span class="line">        <span class="keyword">if</span> (Thread.currentThread().isInterrupted()) &#123;<span class="comment">//线程是否中断</span></span><br><span class="line">            System.out.println(<span class="string">"Interrupted: "</span> +</span><br><span class="line">                    Thread.currentThread().isInterrupted());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"Not interrupted: "</span> +</span><br><span class="line">                    Thread.currentThread().isInterrupted());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Interrupted: false</span><br><span class="line">Interrupted: true</span><br></pre></td></tr></table></figure></p>
+<h2 id="类的惰性初始化"><a href="#类的惰性初始化" class="headerlink" title="类的惰性初始化"></a>类的惰性初始化</h2><p>(这个谜团我暂时无法理解)<br>检查一个类是否被初始化一般有几种状态</p>
+<ul>
+<li>这个类尚未被初始化。</li>
+<li>这个类正在被当前线程初始化：这是对初始化的递归请求。</li>
+<li>这个类正在被其他线程而不是当前线程初始化。</li>
+<li>这个类已经被初始化。</li>
+</ul>
+<p><strong>当前线程，也就是那个后台线<br>程，会等待 Class 对象直到初始化完成。遗憾的是，那个正在进行初始化工作的<br>线程，也就是主线程，正在等待着后台线程运行结束。因为这 2 个线程现在正相<br>互等待着，该程序就死锁了(deadlock)</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Lazy &#123;</span><br><span class="line">    private static boolean initialized = false;</span><br><span class="line">    static &#123;</span><br><span class="line">        Thread t = new Thread(new Runnable() &#123;</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                initialized = true;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;);</span><br><span class="line">        t.start();</span><br><span class="line">        try&#123;</span><br><span class="line">            t.join();</span><br><span class="line">        &#125;catch (InterruptedException e)&#123;</span><br><span class="line">            throw new AssertionError(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args)&#123;</span><br><span class="line">        System.out.println(initialized);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="泛型的擦除"><a href="#泛型的擦除" class="headerlink" title="泛型的擦除"></a>泛型的擦除</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo1;</span><br><span class="line"></span><br><span class="line">import java.util.Arrays;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">public class Pair&lt;T&gt; &#123;</span><br><span class="line">    private final T first;</span><br><span class="line">    private final T second;</span><br><span class="line"></span><br><span class="line">    public Pair(T first, T second) &#123;</span><br><span class="line">        this.first = first;</span><br><span class="line">        this.second = second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public T first() &#123;</span><br><span class="line">        return first;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public T second() &#123;</span><br><span class="line">        return second;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public List&lt;String&gt; stringList() &#123;</span><br><span class="line">        return Arrays.asList(String.valueOf(first),</span><br><span class="line">                String.valueOf(second));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Pair p = new Pair&lt;Object&gt;(23, &quot;skidoo&quot;);</span><br><span class="line">        System.out.println(p.first() + &quot; &quot; + p.second());</span><br><span class="line">        for (String s : p.stringList()) //这里出错了需要用Object s</span><br><span class="line">            System.out.print(s + &quot; &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="序列化中的规则问题"><a href="#序列化中的规则问题" class="headerlink" title="序列化中的规则问题"></a>序列化中的规则问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SerialKiller</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Sub sub = <span class="keyword">new</span> Sub(<span class="number">666</span>);</span><br><span class="line">        sub.checkInvariant();</span><br><span class="line">        Sub copy = (Sub) deepCopy(sub);</span><br><span class="line">        copy.checkInvariant();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Copies its argument via serialization (See Puzzle 80)</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> Object <span class="title">deepCopy</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ByteArrayOutputStream bos =</span><br><span class="line">                    <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">new</span> ObjectOutputStream(bos).writeObject(obj);</span><br><span class="line">            ByteArrayInputStream bin =</span><br><span class="line">                    <span class="keyword">new</span> ByteArrayInputStream(bos.toByteArray());</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ObjectInputStream(bin).readObject();</span><br><span class="line">        &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Set&lt;Super&gt; set = <span class="keyword">new</span> HashSet&lt;Super&gt;();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Super</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Sub</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        set.add(<span class="keyword">this</span>); <span class="comment">// Establish invariant</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkInvariant</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!set.contains(<span class="keyword">this</span>))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"invariant violated"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (o <span class="keyword">instanceof</span> Sub) &amp;&amp; (id == ((Sub)o).id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">为了更具体一些，让我们看看程序中在反序列化 Sub 实例的时候发生了什么。首</span><br><span class="line">先，序列化系统会反序列化 Sub 实例中 Super 的域。唯一的这样的域就是 set，</span><br><span class="line">它包含了一个对 HashSet 的引用。在内部，每个 HashSet 实例包含一个对 HashMap</span><br><span class="line">的引用，HashMap 的键是该散列集合的元素。HashSet 类有一个 readObject 方法，</span><br><span class="line">它创建一个空的 HashMap，并且使用 HashMap 的 put 方法，针对集合中的每个元</span><br><span class="line">素在 HashMap 中插入一个键-值对。put 方法会调用键的 hashCode 方法以确定它</span><br><span class="line">所在的单元格（bucket）。在我们的程序中，散列映射表中唯一的键就是 Sub</span><br><span class="line">的实例，而它的 set 域正在被反序列化。这个实例的子类域（subclass field），</span><br><span class="line">即 id，尚未被初始化，所以它的值为 0，即所有 int 域的缺省初始值。不幸的是，</span><br><span class="line">Sub 的 hashCode 方法将返回这个值，而不是最后保存在这个域中的值 666。因为</span><br><span class="line">hashCode 返回了错误的值，相应的键-值对条目将会放入错误的单元格中。当 id</span><br><span class="line">域被初始化为 666 时，一切都太迟了。当 Sub 实例在 HashMap 中的时候，改变这</span><br><span class="line">个域的值就会破坏这个域，进而破坏 HashSet，破坏 Sub 实例。程序检测到了这</span><br><span class="line">个情况，就报告出了相应的错误。</span><br></pre></td></tr></table></figure>
+<h2 id="浮点数表示不了一些小数"><a href="#浮点数表示不了一些小数" class="headerlink" title="浮点数表示不了一些小数"></a>浮点数表示不了一些小数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class Change&#123;</span><br><span class="line">    public static void main(String args[])&#123;</span><br><span class="line">        System.out.println(2.00 - 1.10);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>1.10这个数不可以用浮点数进行表示，造成了误差</p>
+</blockquote>
+<p>使用下面的方法修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import java.math.BigDecimal;</span><br><span class="line">    public class Change1&#123;</span><br><span class="line">        public static void main(String args[])&#123;</span><br><span class="line">            System.out.println(new BigDecimal(&quot;2.00&quot;).subtract(new BigDecimal(&quot;1.10&quot;)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="不经意的溢出操作"><a href="#不经意的溢出操作" class="headerlink" title="不经意的溢出操作"></a>不经意的溢出操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">final long MICROS_PER_DAY = 24 * 60 * 60 * 1000 * 1000;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>虽然使用long声明计算结果，可是计算过程使用的是int，所以int(结果溢出)-&gt;long，这一步操作已经太迟了。<br>使用下面方法修正：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">final long MICROS_PER_DAY = 24L * 60 * 60 * 1000 * 1000;</span><br></pre></td></tr></table></figure>
+<h2 id="java中long转int原理"><a href="#java中long转int原理" class="headerlink" title="java中long转int原理"></a>java中long转int原理</h2><p>long转为int需要强转都很熟悉，那么介绍一下强转的具体原理。</p>
+<p>首先在计算机中，计算加法减法是用补码计算的。</p>
+<p>正数的补码为其二进制表示。负数的补码为其模的二进制表示取反加一。</p>
+<p>加入为八位二进制加法，如：+3+(-5) </p>
+<p>+3的补码为00000011</p>
+<p>-5的模为+5，二进制表示为00000101，取反为11111010，加一后为11111011，所以-5的补码为11111011</p>
+<p><strong>加法计算公式为：两个数的补码相加，如果是正，则直接输出，如果是负，则除符号位以外取反加一</strong></p>
+<p>+3和-5的补码之和为11111110，为负数，去掉符号位第一位 1 ，剩下1111110，取反加一后为10</p>
+<p>10为十进制中的2，所以带上符号位为-2。</p>
+<p>众所周知，java中long为8字节64位，int为4字节32位。</p>
+<p>java如果long强转为int，做的事为：直接取低位32位作为值，但是看做补码。</p>
+<p>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">long  long= 37444124124l;</span><br><span class="line"></span><br><span class="line">System.out.println((int)long);</span><br></pre></td></tr></table></figure></p>
+<p>输出值为-1210581540</p>
+<p>首先37444124124 转为二进制为</p>
+<p>100010110111110101111111110111011100</p>
+<p>后32位为：10110111110101111111110111011100</p>
+<p>这个后32位直接当做计算结果输出：符号位为1，则是负数，负数取后31位取反加一</p>
+<p>1001000001010000000001000100100</p>
+<p>为：1210581540</p>
+<p>加上符号位为-1210581540</p>
+<h2 id="int-转-long"><a href="#int-转-long" class="headerlink" title="int 转 long"></a>int 转 long</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Long.toHexString(0x100000000L + 0xcafebabe));</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>cafebabe <br><br>ffffffffcafebabe <br><br>100000000</p>
+</blockquote>
+<p>不加L的十六进制高位默认f</p>
+<h2 id="三元表达式中悄悄的转型"><a href="#三元表达式中悄悄的转型" class="headerlink" title="三元表达式中悄悄的转型"></a>三元表达式中悄悄的转型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class DosEquis&#123;</span><br><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">        char x = &apos;X&apos;;</span><br><span class="line">        int i = 0;</span><br><span class="line">        System.out.println(true ? x : 0);</span><br><span class="line">        System.out.println(false ? i : x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>i是int类型，char可以转换成int类型</p>
+<pre><code>System.out.println(false ? i（int类型） : x（byte、short、char);
+</code></pre><p>会发生变量提升。所以尽量第二操作和第三操作有相同的数据类型</p>
+<h2 id="自动转型丢失精度的问题"><a href="#自动转型丢失精度的问题" class="headerlink" title="自动转型丢失精度的问题"></a>自动转型丢失精度的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        short x = 0;</span><br><span class="line">        int i = 123456;</span><br><span class="line">//      x+=i;等于下面的代码</span><br><span class="line">        x = (short) (x + i);</span><br></pre></td></tr></table></figure>
+<h2 id="请注意括号的使用，优先级问题可能导致一些莫名其妙的问题"><a href="#请注意括号的使用，优先级问题可能导致一些莫名其妙的问题" class="headerlink" title="请注意括号的使用，优先级问题可能导致一些莫名其妙的问题"></a>请注意括号的使用，优先级问题可能导致一些莫名其妙的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final String pig = &quot;length: 10&quot;;</span><br><span class="line">final String dog = &quot;length: &quot; + pig.length();</span><br><span class="line">System.out. println(&quot;Animals are equal: &quot;  + pig == dog);</span><br><span class="line">System.out.println((&quot;Animals are equal: &quot; + pig) == dog);</span><br></pre></td></tr></table></figure>
+<h2 id="byte转String最好提供一个字符集"><a href="#byte转String最好提供一个字符集" class="headerlink" title="byte转String最好提供一个字符集"></a>byte转String最好提供一个字符集</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = new String(bytes, &quot;ISO-8859-1&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="使用正则表达式的小问题"><a href="#使用正则表达式的小问题" class="headerlink" title="使用正则表达式的小问题"></a>使用正则表达式的小问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.replaceAll(&quot;\\.&quot;,&quot;/&quot;) + &quot;.class&quot;);</span><br></pre></td></tr></table></figure>
+<pre><code>要想只匹配句点符号，在正则表达式中的句点必须在其前面添加一个反斜杠（\）
+进行转义。因为反斜杠字符在字面含义的字符串中具有特殊的含义——它标识转
+义字符序列的开始——因此反斜杠自身必须用另一个反斜杠来转义，这样就可以
+产生一个转义字符序列，它可以在字面含义的字符串中生成一个反斜杠。
+</code></pre><h2 id="类名的匹配"><a href="#类名的匹配" class="headerlink" title="类名的匹配"></a>类名的匹配</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Test.class.getName().</span><br><span class="line">replaceAll(<span class="string">"\\."</span>,Matcher.quoteReplacement(File.separator)) + <span class="string">".class"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="漂亮的代码"><a href="#漂亮的代码" class="headerlink" title="漂亮的代码"></a>漂亮的代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用这个代码替代switch case</span><br><span class="line">System.out.println(&quot;PGM&quot;.charAt(rnd.nextInt(3)) + &quot;ain&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="类型不同的数字的比较问题"><a href="#类型不同的数字的比较问题" class="headerlink" title="类型不同的数字的比较问题"></a>类型不同的数字的比较问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class BigDelight &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    for (byte b = Byte.MIN_VALUE; b &lt; Byte.MAX_VALUE; b++) &#123;</span><br><span class="line">        if (b == 0x90)</span><br><span class="line">            System.out.print(&quot;Joy!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明(类型提升的锅):</p>
+<pre><code>拿一个 byte 与一个 int 进行的比较是一个混合类型比较（mixed-type
+comparison）。如果你把 byte 数值想象为苹果，把 int 数值想象成为桔子，那
+么该程序就是在拿苹果与桔子比较。请考虑表达式((byte)0x90 == 0x90)，尽管
+外表看起来是成立的，但是它却等于 false。
+为了比较 byte 数值(byte)0x90 和 int 数值 0x90，Java 通过拓宽原始类型转换
+将 byte 提升为一个 int[JLS 5.1.2]，然后比较这两个 int 数值。因为 byte 是
+一个有符号类型，所以这个转换执行的是符号扩展，将负的 byte 数值提升为了
+在数字上相等的 int 数值。在本例中，该转换将(byte)0x90 提升为 int 数值-112，
+它不等于 int 数值 0x90，即+144。
+</code></pre><p>​    </p>
+<h2 id="的小坑"><a href="#的小坑" class="headerlink" title="++的小坑"></a>++的小坑</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">j = j++;</span><br><span class="line">等于</span><br><span class="line">int tmp = j;</span><br><span class="line">j = j + 1;</span><br><span class="line">j = tmp?;</span><br></pre></td></tr></table></figure>
+<h2 id="循环中最大值的回归"><a href="#循环中最大值的回归" class="headerlink" title="循环中最大值的回归"></a>循环中最大值的回归</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class InTheLoop &#123;</span><br><span class="line">    public static final int END = Integer.MAX_VALUE;</span><br><span class="line">    public static final int START = END - 100;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    int count = 0;</span><br><span class="line">    for (int i = START; i &lt;= END; i++)</span><br><span class="line">        count++;</span><br><span class="line">        System.out.println(count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不会输出count，回归到min的值，所以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int i = START;</span><br><span class="line">do &#123;</span><br><span class="line">    count++;</span><br><span class="line">&#125;while (i++ != END)</span><br></pre></td></tr></table></figure></p>
+<p>这些不等于来进行判断比较好</p>
+<h2 id="循环中一个很皮的东西-无限循环"><a href="#循环中一个很皮的东西-无限循环" class="headerlink" title="循环中一个很皮的东西(无限循环)"></a>循环中一个很皮的东西(无限循环)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String i = &quot;helll java&quot;</span><br><span class="line">while (i != i + 0) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="优柔寡断"><a href="#优柔寡断" class="headerlink" title="优柔寡断"></a>优柔寡断</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Indecisive &#123;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    System.out.println(decision());</span><br><span class="line">    &#125;</span><br><span class="line">    static boolean decision() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后return false</p>
+<h2 id="静态代码块的妙用"><a href="#静态代码块的妙用" class="headerlink" title="静态代码块的妙用"></a>静态代码块的妙用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class UnwelcomeGuest &#123;</span><br><span class="line"></span><br><span class="line">    public static final long GUEST_USER_ID = -1;</span><br><span class="line">    private static final long USER_ID = getUserIdOrGuest;</span><br><span class="line">    </span><br><span class="line">    private static long getUserIdOrGuest &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            return getUserIdFromEnvironment();</span><br><span class="line">        &#125; catch (IdUnavailableException e) &#123;</span><br><span class="line">            System.out.println(&quot;Logging in as guest&quot;);</span><br><span class="line">            return GUEST_USER_ID;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">...// The rest of the program is unchanged</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用静态代码块解决final的一次性赋值问题</p>
+<h2 id="实例化中堆栈溢出"><a href="#实例化中堆栈溢出" class="headerlink" title="实例化中堆栈溢出"></a>实例化中堆栈溢出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class Reluctant &#123;</span><br><span class="line"></span><br><span class="line">private Reluctant internalInstance = new Reluctant();</span><br><span class="line"></span><br><span class="line">public Reluctant() throws Exception &#123;</span><br><span class="line">    throw new Exception(&quot;I&apos;m not coming out&quot;);</span><br><span class="line">&#125;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        Reluctant b = new Reluctant();</span><br><span class="line">        System.out.println(&quot;Surprise!&quot;);</span><br><span class="line">    &#125; catch (Exception ex) &#123;</span><br><span class="line">        System.out.println(&quot;I told you so&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="静态方法的调用问题"><a href="#静态方法的调用问题" class="headerlink" title="静态方法的调用问题"></a>静态方法的调用问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Dog &#123;</span><br><span class="line">    public static void bark() &#123;</span><br><span class="line">        System.out.print(&quot;woof &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Basenji extends Dog &#123;</span><br><span class="line">    public static void bark() &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line">public class Bark &#123;</span><br><span class="line">    public static void main(String args[]) &#123;</span><br><span class="line">        Dog woofer = new Dog();</span><br><span class="line">        Dog nipper = new Basenji();</span><br><span class="line">        woofer.bark();</span><br><span class="line">        nipper.bark();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>当一个程序调用了一个静态方法时，要被调用的方法都是
+在编译时刻被选定的，而这种选定是基于修饰符的编译期类型而做出的，修饰符
+的编译期类型就是我们给出的方法调用表达式中圆点左边部分的名字。在本案
+中，两个方法调用的修饰符分别是变量 woofer 和 nipper，它们都被声明为 Dog
+类型。因为它们具有相同的编译期类型，所以编译器使得它们调用的是相同的方
+法：Dog.bark。这也就解释了为什么程序打印出 woof woof。尽管 nipper 的运
+行期类型是 Basenji，但是编译器只会考虑其编译器类型。
+</code></pre><p>​    </p>
+<h2 id="初始化中的循环问题"><a href="#初始化中的循环问题" class="headerlink" title="初始化中的循环问题"></a>初始化中的循环问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Elvis &#123;</span><br><span class="line"></span><br><span class="line">    public static final Elvis INSTANCE = new Elvis();</span><br><span class="line">    private final int beltSize;</span><br><span class="line">    private static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);</span><br><span class="line">    </span><br><span class="line">    private Elvis() &#123;</span><br><span class="line">        beltSize = CURRENT_YEAR - 1930;</span><br><span class="line">    &#125;</span><br><span class="line">    public int beltSize() &#123;</span><br><span class="line">        return beltSize;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(&quot;Elvis wears a size &quot; +</span><br><span class="line">        INSTANCE.beltSize() + &quot; belt.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Elvis 类的初始化是由虚拟机对其 main 方法的调用而触发的。首<br>先，其静态域被设置为缺省值[JLS 4.12.5]，其中 INSTANCE 域被设置为 null，<br>CURRENT_YEAR 被设置为 0。</li>
+<li>接下来，静态域初始器按照其出现的顺序执行。第一<br>个静态域是 INSTANCE，它的值是通过调用 Elvis()构造器而计算出来的。<br>这个构造器会用一个涉及静态域 CURRENT_YEAR 的表达式来初始化 beltSize。通<br>常，读取一个静态域是会引起一个类被初始化的事件之一，但是我们已经在初始<br>化 Elvis 类了。递归的初始化尝试会直接被忽略掉[JLS 12.4.2, 第 3 步]。因此，<br>CURRENT_YEAR 的值仍旧是其缺省值 0。这就是为什么 Elvis 的腰带尺寸变成了<br>-1930 的原因。</li>
+<li>最后，从构造器返回以完成 Elvis 类的初始化，假设我们是在 2006 年运行该程<br>序，那么我们就将静态域 CURRENT_YEAR 初始化成了 2006。遗憾的是，这个域现<br>在所具有的正确值对于向 Elvis.INSTANCE.beltSize 的计算施加影响来说已经<br>太晚了，beltSize 的值已经是-1930 了。这正是后续所有对<br>Elvis.INSTANCE.beltSize()的调用将返回的值。</li>
+</ul>
+<pre><code>该程序表明，在 final 类型的静态域被初始化之前，存在着读取它的值的可能，
+而此时该静态域包含的还只是其所属类型的缺省值。这是与直觉相违背的，因为
+我们通常会将 final 类型的域看作是常量。final 类型的域只有在其初始化表达
+式是常量表达式时才是常量[JLS 15.28]。
+</code></pre><p>​    </p>
+<h2 id="子类覆盖父类方法在初始化中的问题"><a href="#子类覆盖父类方法在初始化中的问题" class="headerlink" title="子类覆盖父类方法在初始化中的问题"></a>子类覆盖父类方法在初始化中的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line"></span><br><span class="line">    protected final int x, y;</span><br><span class="line">    </span><br><span class="line">    private final String name; // Cached at construction time</span><br><span class="line"></span><br><span class="line">    Point(int x, int y) &#123;</span><br><span class="line">        this.x = x;</span><br><span class="line">        this.y = y;</span><br><span class="line">        name = makeName();</span><br><span class="line">    &#125;</span><br><span class="line">    protected String makeName() &#123;</span><br><span class="line">        return &quot;[&quot; + x + &quot;,&quot; + y + &quot;]&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public final String toString() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public class ColorPoint extends Point &#123;</span><br><span class="line"></span><br><span class="line">    private final String color;</span><br><span class="line">    </span><br><span class="line">    ColorPoint(int x, int y, String color) &#123;</span><br><span class="line">        super(x, y);</span><br><span class="line">        this.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">    protected String makeName() &#123;</span><br><span class="line">        return super.makeName() + &quot;:&quot; + color;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(new ColorPoint(4, 2, &quot;purple&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <strong>父类构造器-&gt;子类的makeName(此时color未完成初始化)</strong><br>  父类调用子类的makeName，是因为子类重新了它这个方法。</p>
+<h2 id="累计的玩笑"><a href="#累计的玩笑" class="headerlink" title="累计的玩笑"></a>累计的玩笑</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> class Cache &#123;</span><br><span class="line">    static &#123;</span><br><span class="line">        initializeIfNecessary();</span><br><span class="line">    &#125;</span><br><span class="line">    private static int sum;</span><br><span class="line">    </span><br><span class="line">    public static int getSum() &#123;</span><br><span class="line">        initializeIfNecessary();</span><br><span class="line">        return sum;</span><br><span class="line">    &#125;</span><br><span class="line">private static boolean initialized = false;</span><br><span class="line">    private static synchronized void initializeIfNecessary() &#123;</span><br><span class="line">        if (!initialized) &#123;</span><br><span class="line">            for (int i = 0; i &lt; 100; i++)</span><br><span class="line">            sum += i;</span><br><span class="line">            initialized = true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public class Client &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(Cache.getSum());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="粗心的错误"><a href="#粗心的错误" class="headerlink" title="粗心的错误"></a>粗心的错误</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class ColorPoint &#123;</span><br><span class="line"></span><br><span class="line">    private Map&lt;String,String&gt; m = new HashMap&lt;String,String&gt;();</span><br><span class="line">    public void ColorPoint() &#123;</span><br><span class="line">        m.put(&quot;Mickey&quot;, &quot;Mouse&quot;);</span><br><span class="line">        m.put(&quot;Mickey&quot;, &quot;Mantle&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public int size() &#123;</span><br><span class="line">        return m.size();</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String args[ ]) &#123;</span><br><span class="line">        ColorPoint moreNames = new ColorPoint();</span><br><span class="line">        System.out.println(moreNames.size());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的ColorPoint不是构造方法，不会运行。</p>
+<h2 id="关于变量覆盖的问题"><a href="#关于变量覆盖的问题" class="headerlink" title="关于变量覆盖的问题"></a>关于变量覆盖的问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Base &#123;</span><br><span class="line">    public String className = &quot;Base&quot;;</span><br><span class="line">&#125;</span><br><span class="line">class Derived extends Base &#123;</span><br><span class="line">    private String className = &quot;Derived&quot;;</span><br><span class="line">&#125;</span><br><span class="line">public class PrivateMatter &#123;</span><br><span class="line">    public static void main(String[ ] args) &#123;</span><br><span class="line">        System.out.println(new Derived().className);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><b>变量的隐藏，那么提供比他小的变量，至少一样多。这里继承过来的变量是私有的，所以编译是失败的</b></p>
+<h2 id="不同类中覆盖失败问题"><a href="#不同类中覆盖失败问题" class="headerlink" title="不同类中覆盖失败问题"></a>不同类中覆盖失败问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package hack;</span><br><span class="line">        import click.CodeTalk;</span><br><span class="line">public class TypeIt &#123;</span><br><span class="line">    private static class ClickIt extends CodeTalk &#123;</span><br><span class="line">        void printMessage() &#123;</span><br><span class="line">            System.out.println(&quot;Hack&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[ ] args) &#123;</span><br><span class="line">        ClickIt clickit = new ClickIt();</span><br><span class="line">        clickit.doIt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package click;</span><br><span class="line">public class CodeTalk &#123;</span><br><span class="line">    public void doIt() &#123;</span><br><span class="line">        printMessage();</span><br><span class="line">    &#125;</span><br><span class="line">    void printMessage() &#123;</span><br><span class="line">        System.out.println(&quot;Click&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序中的这两个 twoMessage<br>方法是无关的，它们仅仅是具有相同的名字而已。当程序在 hack 包内调用<br>printMessage 方法时，运行的</p>
+<h2 id="final变量的覆写（和方法的不同之处）"><a href="#final变量的覆写（和方法的不同之处）" class="headerlink" title="final变量的覆写（和方法的不同之处）"></a>final变量的覆写（和方法的不同之处）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Jeopardy &#123;</span><br><span class="line">    public static final String PRIZE = &quot;$64,000&quot;;</span><br><span class="line">&#125;</span><br><span class="line">public class DoubleJeopardy extends Jeopardy &#123;</span><br><span class="line">    public static final String PRIZE = &quot;2 cents&quot;;</span><br><span class="line">    public static void main(String[ ] args) &#123;</span><br><span class="line">        System.out.println(DoubleJeopardy.PRIZE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以证明，final 修饰符对方法和域而言，意味着某些完全不同的事情。对于方<br>法，final 意味着该方法不能被覆写（对实例方法而言）或者隐藏（对静态方法<br>而言）[JLS 8.4.3.3]。对于域，final 意味着该域不能被赋值超过一次[JLS<br>8.3.1.2]。关键字相同，但是其行为却完全不相关。</p>
+<h2 id="名字重用的术语表"><a href="#名字重用的术语表" class="headerlink" title="名字重用的术语表"></a>名字重用的术语表</h2><p>覆写 （override ）<br><br><br>一个实例方法可以覆写（ override ）在其超类中可访问到的具有相同签名的所有实例方法 [JLS<br>8.4.8.1] ，从而使能了动态分派（ dynamic dispatch ）；换句话说， VM 将基于实例的运行期类<br>型来选择要调用的覆写方法 [JLS 15.12.4.4] 。覆写是面向对象编程技术的基础，并且是唯一<br>没有被普遍劝阻的名字重用形式：</p>
+<pre><code>class Base {
+public void f() { }
+}
+class Derived extends Base {
+public void f() { } // overrides Base.f()
+}
+</code></pre><p>隐藏 （hide ）<br><br><br>一个域、静态方法或成员类型可以分别隐藏（ hide ）在其超类中可访问到的具有相同名字（对<br>方法而言就是相同的方法签名）的所有域、静态方法或成员类型。隐藏一个成员将阻止其被<br>继承 [JLS 8.3, 8.4.8.2, 8.5] ：</p>
+<pre><code>class Base {
+public static void f() { }
+}
+class Derived extends Base {
+private static void f() { } // hides Base.f()
+}    
+</code></pre><p>重载 （overload ）<br><br>在某个类中的方法可以重载（ overload ）另一个方法，只要它们具有相同的名字和不同的签<br>名。由调用所指定的重载方法是在编译期选定的 [JLS 8.4.9, 15.12.2] ：</p>
+<pre><code>class CircuitBreaker {
+public void f(int i) { } // int overloading
+public void f(String s) { } // String overloading
+}    
+</code></pre><p>遮蔽 （shadow ）<br><br>一个变量、方法或类型可以分别遮蔽（ shadow ）在一个闭合的文本范围内的具有相同名字<br>的所有变量、方法或类型。如果一个实体被遮蔽了，那么你用它的简单名是无法引用到它的；<br>根据实体的不同，有时你根本就无法引用到它 [JLS 6.3.1] ：</p>
+<pre><code>class WhoKnows {
+    static String sentence = &quot;I don&apos;t know.&quot;;
+    public static woid main(String[ ] args) {
+    String sentence = “I know!”; // shadows static field
+    System.out.println(sentence); // prints local variable
+    }
+}
+</code></pre><h2 id="伪装的多线程程序"><a href="#伪装的多线程程序" class="headerlink" title="伪装的多线程程序"></a>伪装的多线程程序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class PingPong&#123;</span><br><span class="line">    public static synchronized void main(String[] a)&#123;</span><br><span class="line">        Thread t = new Thread()&#123;</span><br><span class="line">            public void run()&#123; pong(); &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        t.run();</span><br><span class="line">        System.out.print( &quot;Ping&quot; );</span><br><span class="line">    &#125;</span><br><span class="line">    static synchronized void pong()&#123;</span><br><span class="line">        System.out.print( &quot;Pong&quot; );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="捣乱锁的妖怪"><a href="#捣乱锁的妖怪" class="headerlink" title="捣乱锁的妖怪"></a>捣乱锁的妖怪</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import java.util.*;</span><br><span class="line">public class Worker extends Thread &#123;</span><br><span class="line">    private volatile boolean quittingTime = false;</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        while (!quittingTime)</span><br><span class="line">            pretendToWork();</span><br><span class="line">        System.out.println(&quot;Beer is good&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    private void pretendToWork() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.sleep(300); // Sleeping on the job?</span><br><span class="line">        &#125; catch (InterruptedException ex) &#123; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // It&apos;s quitting time, wait for worker - Called by good boss</span><br><span class="line">    synchronized void quit() throws InterruptedException &#123;</span><br><span class="line">        quittingTime = true;</span><br><span class="line">        join();</span><br><span class="line">    &#125;</span><br><span class="line">    // Rescind quitting time - Called by evil boss</span><br><span class="line">    synchronized void keepWorking() &#123;</span><br><span class="line">        quittingTime = false;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args)</span><br><span class="line">            throws InterruptedException &#123;</span><br><span class="line">        final Worker worker = new Worker();</span><br><span class="line">        worker.start();</span><br><span class="line">        Timer t = new Timer(true); // Daemon thread</span><br><span class="line">        t.schedule(new TimerTask() &#123;</span><br><span class="line">            public void run() &#123; worker.keepWorking(); &#125;</span><br><span class="line">        &#125;, 500);</span><br><span class="line">        Thread.sleep(400);</span><br><span class="line">        worker.quit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要需要注意join是会放弃锁的</p>
+<p>修改程序的方法如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">private final Object lock = new Object();</span><br><span class="line">// It&apos;s quitting time, wait for worker - Called by good boss</span><br><span class="line">void quit() throws InterruptedException&#123;</span><br><span class="line">    synchronized (lock)&#123;</span><br><span class="line">        quittingTime = true;</span><br><span class="line">        join();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// Rescind quitting time - Called by evil boss</span><br><span class="line">void keepWorking()&#123;</span><br><span class="line">    synchronized(lock)&#123;</span><br><span class="line">        quittingTime = false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="包外访问需要注意类需要是public和成员的限定符为public才可以"><a href="#包外访问需要注意类需要是public和成员的限定符为public才可以" class="headerlink" title="包外访问需要注意类需要是public和成员的限定符为public才可以"></a>包外访问需要注意类需要是public和成员的限定符为public才可以</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo;</span><br><span class="line"></span><br><span class="line">public final class Api &#123;</span><br><span class="line">    public static class PackagePrivate&#123;</span><br><span class="line">        public void aa()&#123;</span><br><span class="line">            System.out.println(&quot;aa&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static PackagePrivate member = new PackagePrivate();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo1;</span><br><span class="line">import com.example.demo.Api;</span><br><span class="line"></span><br><span class="line">public class Client&#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Api.member.aa(); //</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果PackagePrivate不是public 的类那边不可以进行包外访问了</p>
+<h2 id="方法重名-amp-遮蔽引起的问题"><a href="#方法重名-amp-遮蔽引起的问题" class="headerlink" title="方法重名&amp;遮蔽引起的问题"></a>方法重名&amp;遮蔽引起的问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pet</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> String food;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> String sound;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pet</span><span class="params">(String name, String food, String sound)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.food = food;</span><br><span class="line">        <span class="keyword">this</span>.sound = sound;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name + <span class="string">": Mmmmm, "</span> + food );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name + <span class="string">": "</span> + sound + <span class="string">" "</span> + sound);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name + <span class="string">": Zzzzzzz..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">live</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                    eat();</span><br><span class="line">                    play();</span><br><span class="line">                    sleep();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Pet(<span class="string">"Fido"</span>, <span class="string">"beef"</span>, <span class="string">"Woof"</span>).live();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改java类会编译错误，因为Thread里面sleep方法找不到，所以需要避免重名。</p>
+<h2 id="单例模式的问题"><a href="#单例模式的问题" class="headerlink" title="单例模式的问题"></a>单例模式的问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Exception</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Dog INSTANCE = <span class="keyword">new</span> Dog();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Dog</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Woof"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而 Exception 实现了 java.io.Serializable。这就意味着 Dog 是可序列化的<br><br><br>改进如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CopyDog</span></span>&#123; <span class="comment">// Not to be confused with copycat</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Dog newDog = (Dog) deepCopy(Dog.INSTANCE);</span><br><span class="line">        System.out.println(newDog == Dog.INSTANCE);</span><br><span class="line">        System.out.println(newDog);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// This method is very slow and generally a bad idea!</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> Object <span class="title">deepCopy</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            ByteArrayOutputStream bos =</span><br><span class="line">                    <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">new</span> ObjectOutputStream(bos).writeObject(obj);</span><br><span class="line">            ByteArrayInputStream bin =</span><br><span class="line">                    <span class="keyword">new</span> ByteArrayInputStream(bos.toByteArray());</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ObjectInputStream(bin).readObject();</span><br><span class="line">        &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>修正的方法:</p>
+<pre><code>private Object readResolve(){
+// Accept no substitues!
+return INSTANCE;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/16/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://i.loli.net/2019/05/16/5cdd24d4d78bf33751.png" alt="MIV">
+            
+              <p class="site-author-name" itemprop="name">MIV</p>
+              <p class="site-description motion-element" itemprop="description">技术分享-微服务-分布式-网站安全</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#join的锁"><span class="nav-number">1.</span> <span class="nav-text">join的锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同包中的权限问题"><span class="nav-number">2.</span> <span class="nav-text">不同包中的权限问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多层次的反射"><span class="nav-number">3.</span> <span class="nav-text">多层次的反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程中断的问题"><span class="nav-number">4.</span> <span class="nav-text">线程中断的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的惰性初始化"><span class="nav-number">5.</span> <span class="nav-text">类的惰性初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型的擦除"><span class="nav-number">6.</span> <span class="nav-text">泛型的擦除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化中的规则问题"><span class="nav-number">7.</span> <span class="nav-text">序列化中的规则问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浮点数表示不了一些小数"><span class="nav-number">8.</span> <span class="nav-text">浮点数表示不了一些小数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不经意的溢出操作"><span class="nav-number">9.</span> <span class="nav-text">不经意的溢出操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java中long转int原理"><span class="nav-number">10.</span> <span class="nav-text">java中long转int原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#int-转-long"><span class="nav-number">11.</span> <span class="nav-text">int 转 long</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三元表达式中悄悄的转型"><span class="nav-number">12.</span> <span class="nav-text">三元表达式中悄悄的转型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动转型丢失精度的问题"><span class="nav-number">13.</span> <span class="nav-text">自动转型丢失精度的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请注意括号的使用，优先级问题可能导致一些莫名其妙的问题"><span class="nav-number">14.</span> <span class="nav-text">请注意括号的使用，优先级问题可能导致一些莫名其妙的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#byte转String最好提供一个字符集"><span class="nav-number">15.</span> <span class="nav-text">byte转String最好提供一个字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用正则表达式的小问题"><span class="nav-number">16.</span> <span class="nav-text">使用正则表达式的小问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类名的匹配"><span class="nav-number">17.</span> <span class="nav-text">类名的匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漂亮的代码"><span class="nav-number">18.</span> <span class="nav-text">漂亮的代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型不同的数字的比较问题"><span class="nav-number">19.</span> <span class="nav-text">类型不同的数字的比较问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#的小坑"><span class="nav-number">20.</span> <span class="nav-text">++的小坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环中最大值的回归"><span class="nav-number">21.</span> <span class="nav-text">循环中最大值的回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环中一个很皮的东西-无限循环"><span class="nav-number">22.</span> <span class="nav-text">循环中一个很皮的东西(无限循环)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优柔寡断"><span class="nav-number">23.</span> <span class="nav-text">优柔寡断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态代码块的妙用"><span class="nav-number">24.</span> <span class="nav-text">静态代码块的妙用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例化中堆栈溢出"><span class="nav-number">25.</span> <span class="nav-text">实例化中堆栈溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法的调用问题"><span class="nav-number">26.</span> <span class="nav-text">静态方法的调用问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化中的循环问题"><span class="nav-number">27.</span> <span class="nav-text">初始化中的循环问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子类覆盖父类方法在初始化中的问题"><span class="nav-number">28.</span> <span class="nav-text">子类覆盖父类方法在初始化中的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#累计的玩笑"><span class="nav-number">29.</span> <span class="nav-text">累计的玩笑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#粗心的错误"><span class="nav-number">30.</span> <span class="nav-text">粗心的错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于变量覆盖的问题"><span class="nav-number">31.</span> <span class="nav-text">关于变量覆盖的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同类中覆盖失败问题"><span class="nav-number">32.</span> <span class="nav-text">不同类中覆盖失败问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#final变量的覆写（和方法的不同之处）"><span class="nav-number">33.</span> <span class="nav-text">final变量的覆写（和方法的不同之处）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#名字重用的术语表"><span class="nav-number">34.</span> <span class="nav-text">名字重用的术语表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#伪装的多线程程序"><span class="nav-number">35.</span> <span class="nav-text">伪装的多线程程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#捣乱锁的妖怪"><span class="nav-number">36.</span> <span class="nav-text">捣乱锁的妖怪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包外访问需要注意类需要是public和成员的限定符为public才可以"><span class="nav-number">37.</span> <span class="nav-text">包外访问需要注意类需要是public和成员的限定符为public才可以</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法重名-amp-遮蔽引起的问题"><span class="nav-number">38.</span> <span class="nav-text">方法重名&amp;遮蔽引起的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式的问题"><span class="nav-number">39.</span> <span class="nav-text">单例模式的问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MIV</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"}});</script></body>
+</html>
